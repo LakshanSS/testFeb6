@@ -12,9 +12,13 @@ service / on new http:Listener(9090) {
     # + return - string name with hello message or error
     resource function get greeting(string name) returns string|error {
         //http:Client cl = check new("http://prodcat-2479457892:9091/");
-        stubs:ProductCatalogServiceClient catalogClient = check new("http://prodcat-2479457892:9091");
-        stubs:ListProductsResponse productsResponse = check catalogClient->ListProducts({});
-        io:println(productsResponse);
+        // stubs:ProductCatalogServiceClient catalogClient = check new("http://prodcat-2479457892:9091");
+        // stubs:ListProductsResponse productsResponse = check catalogClient->ListProducts({});
+        // io:println(productsResponse);
+
+        stubs:CartServiceClient cartClient = check new ("http://cart2-833837164:9092");
+        stubs:Cart res = check cartClient->GetCart(req = {user_id: "testuser"});
+        io:print(res);
         // Send a response back to the caller.
         if name is "" {
             return error("name should not be empty!");
